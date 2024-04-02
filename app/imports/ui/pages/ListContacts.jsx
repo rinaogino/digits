@@ -15,11 +15,13 @@ const ListContacts = () => {
     // when your component is unmounted or deps change.
     // Get access to Contact documents.
     const subscription = Meteor.subscribe(Contacts.userPublicationName);
+    // Get access to Note documents.
     const subscription2 = Meteor.subscribe(Notes.userPublicationName);
     // Determine if the subscription is ready for both subscriptions.
     const rdy = subscription.ready() && subscription2.ready();
     // Get the Contact documents
     const contactItems = Contacts.collection.find({}).fetch();
+    // Get the Note documents
     const noteItems = Notes.collection.find({}).fetch();
     return {
       contacts: contactItems,
@@ -35,7 +37,11 @@ const ListContacts = () => {
             <h2>List Contacts</h2>
           </Col>
           <Row xs={1} md={2} lg={3} className="g-4">
-            {contacts.map((contact) => (<Col key={contact._id}><Contact contact={contact} notes={notes.filter(note => (note.contactId === contact._id))} /></Col>))}
+            {contacts.map((contact) => (
+              <Col key={contact._id}>
+                <Contact contact={contact} notes={notes.filter(note => (note.contactId === contact._id))} />
+              </Col>
+            ))}
           </Row>
         </Col>
       </Row>
